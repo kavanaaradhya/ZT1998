@@ -1,0 +1,52 @@
+package REGEX;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class PHONE_REGEX {
+
+    
+    public static void compareRegexInFiles(String filePath1, String filePath2) {
+        try {
+            
+            String url = new String(Files.readAllBytes(Paths.get(filePath1))).trim();
+            System.out.println("Phone_num from file 1: " + url);
+
+            
+            String regexPattern = new String(Files.readAllBytes(Paths.get(filePath2))).trim();
+            System.out.println("Regex pattern from file 2: " + regexPattern);
+
+            
+            Pattern pattern = Pattern.compile(regexPattern);
+
+            
+            Matcher matcher = pattern.matcher(url);
+
+            
+            boolean match = matcher.matches();
+
+            
+            if (match) {
+                System.out.println("The phone number matches the regex pattern.");
+            } else {
+                System.out.println("The phone number does not match the regex pattern.");
+            }
+
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading files: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+       
+        String filePath1 = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/REGEX/Phone_num_src.txt"; // Update this with the actual file path
+        String filePath2 = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/REGEX/Phone_num_tgt.txt"; // Update this with the actual file path
+        
+        
+        compareRegexInFiles(filePath1, filePath2);
+    }
+}

@@ -1,0 +1,45 @@
+package REGEX;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Regex {
+    public static void main(String[] args) {
+        String sourceFileName = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/REGEX/SRC.txt"; // Source file containing input string
+        String targetFileName = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/REGEX/TARGET.txt"; // Target file containing regex pattern
+
+        try {
+            // Read input string from source file
+            BufferedReader sourceReader = new BufferedReader(new FileReader(sourceFileName));
+            String input = sourceReader.readLine();
+            sourceReader.close();
+
+            // Read regex pattern from target file
+            BufferedReader targetReader = new BufferedReader(new FileReader(targetFileName));
+            String regexPattern = targetReader.readLine();
+            targetReader.close();
+
+            // Compile the regex pattern
+            Pattern pattern = Pattern.compile(regexPattern);
+
+            // Match the input against the pattern
+            Matcher matcher = pattern.matcher(input);
+
+            boolean matchFound = false;
+            // Find and print all matches
+            while (matcher.find()) {
+                matchFound = true;
+                System.out.println("Match found: " + matcher.group());
+            }
+            
+            if (!matchFound) {
+                System.out.println("Not matched.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

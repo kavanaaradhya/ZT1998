@@ -1,0 +1,57 @@
+package SINGLE_FILE;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1 {
+
+    public static void main(String[] args) {
+        String sourceFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        String regexFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt";
+
+        try {
+            // Read content from the source file
+            String content = new String(Files.readAllBytes(Paths.get(sourceFilePath))).trim();
+
+            // Extract the input content from the source file
+            String inputContent = extractInputContent(content);
+
+            // Read regex pattern from the target file
+            String regexPattern = new String(Files.readAllBytes(Paths.get(regexFilePath))).trim();
+
+            // Print input content and regex pattern
+            System.out.println("Input content: " + inputContent);
+            System.out.println("Regex pattern: " + regexPattern);
+
+            // Compile the regex pattern
+            Pattern pattern = Pattern.compile(regexPattern);
+
+            // Create matcher for the input content
+            Matcher matcher = pattern.matcher(inputContent);
+
+            // Perform matching
+            boolean match = matcher.find();
+
+            // Output comparison result
+            if (match) {
+                System.out.println("The input matches the regex pattern.");
+            } else {
+                System.out.println("The input does not match the regex pattern.");
+            }
+
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading files: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Function to extract input content from the source file
+    private static String extractInputContent(String content) {
+        // You can implement your logic to extract the input content here
+        // For now, let's return the content as it is
+        return content;
+    }
+}

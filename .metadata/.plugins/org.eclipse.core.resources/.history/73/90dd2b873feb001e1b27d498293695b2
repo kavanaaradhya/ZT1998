@@ -1,0 +1,60 @@
+package SINGLE_FILE;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1 {
+
+    public static void main(String[] args) {
+        try {
+            // Read text from the source file
+            String text = new String(Files.readAllBytes(Paths.get("/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt")));
+            
+            // Read regex patterns from the file
+            Map<String, String> patterns = readRegexPatterns("/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt");
+            String urlRegex = patterns.get("URL");
+            String emailRegex = patterns.get("EMAIL");
+            String phoneNumberRegex = patterns.get("PHONE_NUMBER");
+            
+            List<String> urls = extractMatches(text, urlRegex);
+            List<String> emails = extractMatches(text, emailRegex);
+            List<String> phoneNumbers = extractMatches(text, phoneNumberRegex);
+
+            System.out.println("URLs: " + urls);
+            System.out.println("Emails: " + emails);
+            System.out.println("Phone Numbers: " + phoneNumbers);
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading the source file or regex file: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static Map<String, String> readRegexPatterns(String filename) throws IOException {
+        Map<String, String> patterns = new HashMap<>();
+        List<String> lines = Files.readAllLines(Paths.get(filename));
+        for (String line : lines) {
+            String[] parts = line.split("=");
+            if (parts.length == 2) {
+                patterns.put(parts[0], parts[1]);
+            }
+        }
+        return patterns;
+    }
+
+    public static List<String> extractMatches(String text, String regex) {
+        List<String> matches = new ArrayList<>();
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            matches.add(matcher.group());
+        }
+        return matches;
+    }
+}

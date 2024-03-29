@@ -1,0 +1,37 @@
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+
+public class sc {
+    public static void main(String[] args) {
+        try {
+            // Capture screenshot
+            Robot robot = new Robot();
+            Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+            BufferedImage screenImage = robot.createScreenCapture(screenRect);
+
+            // Save the screenshot to a file
+            File outputFile = new File("screenshot.png");
+            ImageIO.write(screenImage, "png", outputFile);
+
+            // Perform OCR on the screenshot
+            ITesseract instance = new Tesseract();
+            instance.setDatapath("path_to_tessdata_directory");
+            instance.setLanguage("eng"); // Set language if necessary
+
+            String result = instance.doOCR(outputFile);
+
+            // Print the extracted text
+            System.out.println("Extracted text:");
+            System.out.println(result);
+
+            // Delete the temporary screenshot file
+            outputFile.delete();
+        } catch (AWTException | TesseractException e) {
+            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+}

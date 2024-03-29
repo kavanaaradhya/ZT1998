@@ -1,0 +1,5 @@
+Scenario 1: when user enter the phone number in signup page
+Given I open the Facebbok signup page 
+and I enter the phone number "^\d\d\d\d\d\d\d\d\d\d$"
+When I click on submit button
+Then I expect to see Homepage

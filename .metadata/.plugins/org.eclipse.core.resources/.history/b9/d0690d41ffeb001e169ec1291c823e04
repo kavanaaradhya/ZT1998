@@ -1,0 +1,71 @@
+package SINGLE_FILE;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single3 {
+    public static void main(String[] args) {
+        String srcFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        String tgtFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt";
+
+        // Process source file
+        System.out.println("Source File:");
+        Map<String, String> srcInputPatternMap = extractInputPatternMap(srcFilePath);
+
+        // Process target file
+        System.out.println("\nTarget File:");
+        extractPattern(tgtFilePath, srcInputPatternMap);
+    }
+
+    private static Map<String, String> extractInputPatternMap(String filePath) {
+        Map<String, String> inputPatternMap = new HashMap<>();
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                Pattern pattern = Pattern.compile("\"([^\"]+)\"\\s*([^\"\\n]+)");
+                Matcher matcher = pattern.matcher(line);
+                if (matcher.find()) {
+                    String input = matcher.group(1);
+                    String patternString = matcher.group(2).trim();
+                    inputPatternMap.put(input, patternString);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return inputPatternMap;
+    }
+
+    private static void extractPattern(String filePath, Map<String, String> srcInputPatternMap) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                Pattern pattern = Pattern.compile("\"([^\"]+)\"");
+                Matcher matcher = pattern.matcher(line);
+                while (matcher.find()) {
+                    String input = matcher.group(1);
+                    if (srcInputPatternMap.containsKey(input)) {
+                        String patternString = srcInputPatternMap.get(input);
+                        System.out.println("Input: " + input);
+                        System.out.println("Pattern: " + patternString);
+                        if (input.matches(patternString)) {
+                            System.out.println("Matched!");
+                        } else {
+                            System.out.println("Not Matched!");
+                        }
+                        System.out.println();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

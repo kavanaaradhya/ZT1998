@@ -1,0 +1,59 @@
+package SINGLE_FILE;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1 {
+
+    public static void main(String[] args) {
+        try {
+            // Read text from the source file
+            String text = new String(Files.readAllBytes(Paths.get("/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt")));
+            List<String> urls = extractURLs(text);
+            List<String> emails = extractEmails(text);
+            List<String> phoneNumbers = extractPhoneNumbers(text);
+
+            System.out.println("URLs: " + urls);
+            System.out.println("Emails: " + emails);
+            System.out.println("Phone Numbers: " + phoneNumbers);
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading the source file: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static List<String> extractURLs(String text) {
+        List<String> urls = new ArrayList<>();
+        Pattern pattern = Pattern.compile("https?://\\S+");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            urls.add(matcher.group());
+        }
+        return urls;
+    }
+
+    public static List<String> extractEmails(String text) {
+        List<String> emails = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            emails.add(matcher.group());
+        }
+        return emails;
+    }
+
+    public static List<String> extractPhoneNumbers(String text) {
+        List<String> phoneNumbers = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\b\\d{10}\\b");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            phoneNumbers.add(matcher.group());
+        }
+        return phoneNumbers;
+    }
+}

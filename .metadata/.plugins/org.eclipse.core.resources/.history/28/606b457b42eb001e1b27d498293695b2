@@ -1,0 +1,5 @@
+^https:\/\/www\.google\.com.*
+
+[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}
+
+^\d\d\d\d\d\d\d\d\d\d$

@@ -1,0 +1,27 @@
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class main4 {
+    public static void main(String[] args) {
+        // Sample line of text containing a regex pattern surrounded by slashes
+        String lineOfText = "This is a sample line with a regex pattern: /\\d{3}-\\d{2}-\\d{4}/.";
+
+        // Define a regex pattern to match the regex part surrounded by slashes
+        String regexPattern = "/([^/]+)/";
+
+        // Create a Pattern object
+        Pattern pattern = Pattern.compile(regexPattern);
+
+        // Create a Matcher object
+        Matcher matcher = pattern.matcher(lineOfText);
+
+        // Find the regex pattern in the line of text
+        if (matcher.find()) {
+            // Extract the regex pattern
+            String extractedRegex = matcher.group(1);
+            System.out.println("Extracted regex pattern: " + extractedRegex);
+        } else {
+            System.out.println("No regex pattern found in the line of text.");
+        }
+    }
+}

@@ -1,0 +1,60 @@
+package SINGLE_FILE;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1{
+
+    // Function to compare content of two files using a regular expression
+    public static void compareRegexInFiles(String filePath1, String filePath2, String dataType) {
+        try {
+            // Read content from the first file
+            String content1 = new String(Files.readAllBytes(Paths.get(filePath1))).trim();
+            System.out.println(dataType + " from file 1: " + content1);
+
+            // Read content from the second file (regex pattern)
+            String regexPattern = new String(Files.readAllBytes(Paths.get(filePath2))).trim();
+            System.out.println("Regex pattern from file 2: " + regexPattern);
+
+            // Compile the regex pattern
+            Pattern pattern = Pattern.compile(regexPattern);
+
+            // Create matcher for the content
+            Matcher matcher = pattern.matcher(content1);
+
+            // Perform matching
+            boolean match = matcher.matches();
+
+            // Output comparison result
+            if (match) {
+                System.out.println("The " + dataType + " matches the regex pattern.");
+            } else {
+                System.out.println("The " + dataType + " does not match the regex pattern.");
+            }
+
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading files: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        // Example usage for email comparison
+        String emailFilePath1 = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        String emailFilePath2 = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt";
+        compareRegexInFiles(emailFilePath1, emailFilePath2, "Email");
+
+        // Example usage for URL comparison
+        String urlFilePath1 = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        String urlFilePath2 = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt";
+        compareRegexInFiles(urlFilePath1, urlFilePath2, "URL");
+
+        // Example usage for phone number comparison
+        String phoneFilePath1 = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        String phoneFilePath2 = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt";
+        compareRegexInFiles(phoneFilePath1, phoneFilePath2, "Phone number");
+    }
+}

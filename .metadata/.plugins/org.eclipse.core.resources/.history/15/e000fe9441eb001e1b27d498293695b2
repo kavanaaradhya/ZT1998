@@ -1,0 +1,67 @@
+package SINGLE_FILE;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1 {
+
+    // Function to compare content of a file against a regex pattern
+    public static void compareRegexInFile(String sourceFilePath, String dataType) {
+        try {
+            // Read content from the source file
+            String content = new String(Files.readAllBytes(Paths.get(sourceFilePath))).trim();
+            System.out.println(dataType + " from file: " + content);
+
+            // Extracted input from source file
+            List<String> extractedInput = extractData(content);
+
+            // Perform matching for each extracted input
+            for (String input : extractedInput) {
+                System.out.println("Comparing: " + input);
+                boolean match = checkMatch(input, dataType);
+                System.out.println("Result: " + (match ? "Matches" : "Does not match"));
+            }
+
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading files: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Function to extract data from text (e.g., URLs, emails, phone numbers)
+    public static List<String> extractData(String text) {
+        // Implement your data extraction logic here
+        // This can be similar to your original extraction methods
+        // Example implementation:
+        // List<String> extractedData = new ArrayList<>();
+        // Implement extraction logic and add data to extractedData list
+        // return extractedData;
+        return null; // Placeholder, replace with actual implementation
+    }
+
+    // Function to check if the given input matches the regex pattern for the specified data type
+    public static boolean checkMatch(String input, String dataType) {
+        // Implement your matching logic here
+        // Compile the appropriate regex pattern based on the data type
+        // Perform matching and return the result
+        return false; // Placeholder, replace with actual implementation
+    }
+
+    public static void main(String[] args) {
+        // Example usage for email comparison
+        String emailFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        compareRegexInFile(emailFilePath, "Email");
+
+        // Example usage for URL comparison
+        String urlFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        compareRegexInFile(urlFilePath, "URL");
+
+        // Example usage for phone number comparison
+        String phoneFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        compareRegexInFile(phoneFilePath, "Phone number");
+    }
+}

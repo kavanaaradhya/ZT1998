@@ -1,0 +1,104 @@
+package SINGLE_FILE;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single3 {
+    public static void main(String[] args) {
+        // File paths for source and target files
+        String srcFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt"; // Update the source file path accordingly
+        String tgtFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt"; // Update the target file path accordingly
+
+        try {
+            // Extract regex patterns from the source file
+            String[] srcRegexPatterns = extractRegexFromTextFile(srcFilePath);
+
+            // Modify the target file with extracted regex patterns
+            modifyTargetFileWithRegex(tgtFilePath, srcRegexPatterns);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to extract regex patterns from a text file
+    private static String[] extractRegexFromTextFile(String filePath) throws IOException {
+        // Read the text from the file
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuilder.append(line).append("\n");
+        }
+        bufferedReader.close();
+
+        String text = stringBuilder.toString();
+
+        // Define the regex pattern to extract URL, email, and phone number regex inputs
+        Pattern urlPattern = Pattern.compile("url \"(.*?)\"");
+        Matcher urlMatcher = urlPattern.matcher(text);
+
+        Pattern emailPattern = Pattern.compile("email \"(.*?)\"");
+        Matcher emailMatcher = emailPattern.matcher(text);
+
+        Pattern phonePattern = Pattern.compile("phone number \"(.*?)\"");
+        Matcher phoneMatcher = phonePattern.matcher(text);
+
+        // Extract and store the regex patterns
+        StringBuilder regexPatternsBuilder = new StringBuilder();
+        while (urlMatcher.find()) {
+            regexPatternsBuilder.append(urlMatcher.group(1)).append("|");
+        }
+
+        while (emailMatcher.find()) {
+            regexPatternsBuilder.append(emailMatcher.group(1)).append("|");
+        }
+
+        while (phoneMatcher.find()) {
+            regexPatternsBuilder.append(phoneMatcher.group(1)).append("|");
+        }
+
+        String regexPatterns = regexPatternsBuilder.toString();
+        // Remove the trailing "|" character
+        regexPatterns = regexPatterns.substring(0, regexPatterns.length() - 1);
+
+        return regexPatterns.split("\\|");
+    }
+
+    // Method to modify the target file with extracted regex patterns
+    private static void modifyTargetFileWithRegex(String filePath, String[] srcRegexPatterns) throws IOException {
+        // Read the text from the file
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuilder.append(line).append("\n");
+        }
+        bufferedReader.close();
+
+        String text = stringBuilder.toString();
+
+        // Define the regex pattern to match
+        Pattern pattern = Pattern.compile("\"(.*?)\"");
+        Matcher matcher = pattern.matcher(text);
+
+        // Match and print the regex patterns
+        System.out.println("Matching Regex Patterns:");
+        while (matcher.find()) {
+            String input = matcher.group(1);
+            boolean matched = false;
+            for (String regexPattern : srcRegexPatterns) {
+                if (input.matches(regexPattern)) {
+                    System.out.println("Matched: " + input + " with pattern: " + regexPattern);
+                    matched = true;
+                    break;
+                }
+            }
+            if (!matched) {
+                System.out.println("Not Matching: " + input);
+            }
+        }
+    }
+}

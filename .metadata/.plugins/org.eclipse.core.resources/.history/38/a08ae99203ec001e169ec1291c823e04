@@ -1,0 +1,71 @@
+package SINGLE_FILE;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class Single3 {
+    public static void main(String[] args) {
+        String srcFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt"; // Source file path
+        String tgtFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt"; // Target file path
+
+        try {
+            // Read the text from the source file
+            StringBuilder srcStringBuilder = new StringBuilder();
+            BufferedReader srcBufferedReader = new BufferedReader(new FileReader(srcFilePath));
+            String srcLine;
+            while ((srcLine = srcBufferedReader.readLine()) != null) {
+                srcStringBuilder.append(srcLine).append("\n");
+            }
+            srcBufferedReader.close();
+
+            String srcText = srcStringBuilder.toString();
+
+            // Read the text from the target file
+            StringBuilder tgtStringBuilder = new StringBuilder();
+            BufferedReader tgtBufferedReader = new BufferedReader(new FileReader(tgtFilePath));
+            String tgtLine;
+            while ((tgtLine = tgtBufferedReader.readLine()) != null) {
+                tgtStringBuilder.append(tgtLine).append("\n");
+            }
+            tgtBufferedReader.close();
+
+            String tgtText = tgtStringBuilder.toString();
+
+            // Split the texts into lines
+            String[] srcLines = srcText.split("\\r?\\n");
+            String[] tgtLines = tgtText.split("\\r?\\n");
+
+            // Compare the texts line by line
+            int minLength = Math.min(srcLines.length, tgtLines.length);
+            for (int i = 0; i < minLength; i++) {
+                if (!srcLines[i].equals(tgtLines[i])) {
+                    System.out.println("Mismatched at Line " + (i + 1) + ":");
+                    System.out.println("Source: " + srcLines[i]);
+                    System.out.println("Target: " + tgtLines[i]);
+                }
+            }
+
+            // Check for extra lines in either file
+            if (srcLines.length != tgtLines.length) {
+                int maxLines = Math.max(srcLines.length, tgtLines.length);
+                for (int i = minLength; i < maxLines; i++) {
+                    if (i >= srcLines.length) {
+                        System.out.println("Extra line in Target file at Line " + (i + 1) + ": " + tgtLines[i]);
+                    } else {
+                        System.out.println("Extra line in Source file at Line " + (i + 1) + ": " + srcLines[i]);
+                    }
+                }
+            }
+
+            // Print whether files are identical
+            if (srcText.equals(tgtText)) {
+                System.out.println("Files are identical.");
+            } else {
+                System.out.println("Files are not identical.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

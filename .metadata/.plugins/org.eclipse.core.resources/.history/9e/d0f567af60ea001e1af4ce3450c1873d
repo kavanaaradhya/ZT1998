@@ -1,0 +1,37 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class url_regex {
+    public static void main(String[] args) {
+        // File path where the text is stored
+        String filePath = "/Users/kavana/eclipse-workspace/EMAIL_VALIDATION/src/test/java/url_target.txt";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            // Read the line of text from the file
+            String lineOfText = br.readLine();
+
+            // Define a regex pattern to match URLs
+            String regexPattern = "\\b(?:https?://)?(?:www\\.)?[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(?:/\\S*)?\\b";
+
+            // Create a Pattern object
+            Pattern pattern = Pattern.compile(regexPattern);
+
+            // Create a Matcher object
+            Matcher matcher = pattern.matcher(lineOfText);
+
+            // Find the regex pattern in the line of text
+            if (matcher.find()) {
+                // Extract the regex pattern
+                String extractedUrl = matcher.group();
+                System.out.println("Extracted URL: " + extractedUrl);
+            } else {
+                System.out.println("No URL found in the line of text.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

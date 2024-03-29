@@ -1,0 +1,46 @@
+package SINGLE_FILE;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1 {
+    public static void main(String[] args) {
+        try {
+            // Read the regex pattern from source file
+            String regex = readFromFile("source.txt");
+
+            // Read the input string from target file
+            String input = readFromFile("target.txt");
+
+            // Compile the regex pattern
+            Pattern pattern = Pattern.compile(regex);
+
+            // Match the input string against the regex pattern
+            Matcher matcher = pattern.matcher(input);
+
+            // Print whether the input string matches the regex pattern or not
+            if (matcher.matches()) {
+                System.out.println("Input string matches the regex pattern.");
+            } else {
+                System.out.println("Input string does not match the regex pattern.");
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+    }
+
+    // Method to read content from a file
+    private static String readFromFile(String fileName) throws IOException {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line);
+            }
+        }
+        return content.toString();
+    }
+}

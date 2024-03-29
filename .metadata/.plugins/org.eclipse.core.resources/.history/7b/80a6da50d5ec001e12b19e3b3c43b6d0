@@ -1,0 +1,18 @@
+Feature: Google Homepage
+Scenario 1: when user enter url in the browser homepage should be displayed
+Given I open the browser enter the url"(?:https?://)(?:www\\.)?google\\.com"
+When I click on Search button
+Then I expect to see Homepage
+
+Scenario 2: when user enter email in the google page
+Given I open the gmail site 
+and I enter the email "[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}"
+When I click on Continue button
+Then I see the Password page
+
+
+Scenario 3: when user enter the phone number in signup page
+Given I open the Facebbok signup page 
+and I enter the phone number "^\d\d\d\d\d\d\d\d\d\d$"
+When I click on submit button
+Then I expect to see Homepage

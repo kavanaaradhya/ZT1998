@@ -1,0 +1,5 @@
+Feature: Google Homepage
+Scenario 1: when user enter url in the browser homepage should be displayed
+Given I open the browser enter the url "((((https?)://)|)([-%()_.!~*';\?:@&=+$,A-Za-z0-9])+)(?:com|in)"
+When I click on Search button
+Then I expect to see Homepage

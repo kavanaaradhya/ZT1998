@@ -1,0 +1,55 @@
+
+
+public class sc {
+
+    public static void main(String[] args) {
+        // Load OpenCV and Tesseract
+        Loader.load(opencv_core.class);
+        Loader.load(opencv_imgproc.class);
+        Loader.load(opencv_imgcodecs.class);
+        Loader.load(tesseract.class);
+
+        // Path to your screenshot image
+        String imagePath = "path_to_your_screenshot_image.png";
+
+        // Read the image
+        Mat image = Imgcodecs.imread(imagePath);
+
+        // Convert the image to grayscale
+        Mat gray = new Mat();
+        Imgproc.cvtColor(image, gray, Imgproc.COLOR_BGR2GRAY);
+
+        // Perform some preprocessing (optional, depending on the quality of your images)
+        Imgproc.GaussianBlur(gray, gray, new Size(3, 3), 0);
+        Imgproc.threshold(gray, gray, 0, 255, Imgproc.THRESH_BINARY | Imgproc.THRESH_OTSU);
+
+        // Save the preprocessed image (optional)
+        Imgcodecs.imwrite("preprocessed_image.png", gray);
+
+        // Use Tesseract for OCR
+        BytePointer outText;
+        try (TessBaseAPI api = new TessBaseAPI()) {
+            // Initialize tesseract-ocr with English
+            if (api.Init(".", "eng") != 0) {
+                System.err.println("Could not initialize tesseract.");
+                System.exit(1);
+            }
+
+            // Set image data
+            api.SetImage(gray.data(), gray.cols(), gray.rows(), 1, gray.cols());
+
+            // Get OCR result
+            outText = api.GetUTF8Text();
+            String extractedText = outText.getString();
+
+            // Print OCR result
+            System.out.println("Extracted text: " + extractedText);
+
+            // Release resources
+            api.End();
+        }
+
+        // Deallocate the memory allocated for outText
+        outText.deallocate();
+    }
+}

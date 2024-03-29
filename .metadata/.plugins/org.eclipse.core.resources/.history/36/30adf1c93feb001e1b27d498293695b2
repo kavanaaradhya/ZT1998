@@ -1,0 +1,56 @@
+package SINGLE_FILE;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1 {
+
+    // Function to compare content of a file against a regex pattern
+    public static void compareRegexInFile(String filePath, String regexPattern, String dataType) {
+        try {
+            // Read content from the file
+            String content = new String(Files.readAllBytes(Paths.get(filePath))).trim();
+            System.out.println(dataType + " from file: " + content);
+
+            // Compile the regex pattern
+            Pattern pattern = Pattern.compile(regexPattern);
+
+            // Create matcher for the content
+            Matcher matcher = pattern.matcher(content);
+
+            // Perform matching
+            boolean match = matcher.matches();
+
+            // Output comparison result
+            if (match) {
+                System.out.println("The " + dataType + " matches the regex pattern.");
+            } else {
+                System.out.println("The " + dataType + " does not match the regex pattern.");
+            }
+
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading files: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        // Example usage for email comparison
+        String emailFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/EMAIL_REGEX/Email.txt";
+        String emailRegexPattern = "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b";
+        compareRegexInFile(emailFilePath, emailRegexPattern, "Email");
+
+        // Example usage for URL comparison
+        String urlFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/URL_REGEX/Url.txt";
+        String urlRegexPattern = "https?://\\S+";
+        compareRegexInFile(urlFilePath, urlRegexPattern, "URL");
+
+        // Example usage for phone number comparison
+        String phoneFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/REGEX/Phone_num.txt";
+        String phoneRegexPattern = "\\b\\d{10}\\b";
+        compareRegexInFile(phoneFilePath, phoneRegexPattern, "Phone number");
+    }
+}

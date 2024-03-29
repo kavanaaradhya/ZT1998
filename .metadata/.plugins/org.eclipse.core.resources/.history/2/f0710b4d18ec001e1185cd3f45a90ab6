@@ -1,0 +1,27 @@
+import java.awt.AWTException;
+import java.io.File;
+
+public class sc {
+    public static void main(String[] args) {
+        // Path to your screenshot image
+        File imageFile = new File("/Users/kavana/Desktop");
+
+        // Tesseract instance
+        ITesseract instance = new Tesseract();
+
+        try {
+            // Initialize Tesseract
+            instance.setDatapath("path_to_tessdata_directory");
+            instance.setLanguage("eng"); // Set language if necessary
+
+            // Perform OCR on the image
+            String result = instance.doOCR(imageFile);
+
+            // Print the extracted text
+            System.out.println("Extracted text: ");
+            System.out.println(result);
+        } catch (AWTException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+}

@@ -1,0 +1,39 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class a {
+    public static void main(String[] args) {
+        String sourceFileName = ""; // Name of the source file
+        String targetFileName = "target.txt"; // Name of the target file
+
+        try {
+            // Read the fixed regex pattern from the target file
+            BufferedReader targetReader = new BufferedReader(new FileReader(targetFileName));
+            String regexPattern = targetReader.readLine();
+            targetReader.close();
+
+            // Compile the regex pattern
+            Pattern pattern = Pattern.compile(regexPattern);
+
+            // Read the source file and match each line against the regex pattern
+            BufferedReader sourceReader = new BufferedReader(new FileReader(sourceFileName));
+            String line;
+            while ((line = sourceReader.readLine()) != null) {
+                Matcher matcher = pattern.matcher(line);
+                while (matcher.find()) {
+                    String matchedText = matcher.group();
+                    // Check if the matched text contains exactly 10 numbers
+                    if (matchedText.matches("\\d{10}")) {
+                        System.out.println("Match found: " + matchedText);
+                    }
+                }
+            }
+            sourceReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

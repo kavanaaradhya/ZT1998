@@ -1,0 +1,58 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single3 {
+    public static void main(String[] args) {
+        // File paths for source and target files
+        String srcFilePath = "/path/to/your/src/file.txt"; // Update the source file path accordingly
+        String tgtFilePath = "/path/to/your/target/file.txt"; // Update the target file path accordingly
+        String targetPattern = "^https:\\/\\/www\\.google\\.com.*"; // Update with your fixed regex pattern
+
+        try {
+            // Extract regex patterns from the source file
+            Map<String, String> srcInputPatternMap = extractRegexFromTextFile(srcFilePath);
+
+            // Check input patterns against the target pattern
+            for (Map.Entry<String, String> entry : srcInputPatternMap.entrySet()) {
+                String input = entry.getKey();
+                String pattern = entry.getValue();
+
+                // Check if the input matches the target pattern
+                if (pattern.equals(targetPattern)) {
+                    System.out.println("Input: " + input + " matches the target pattern.");
+                } else {
+                    System.out.println("Input: " + input + " does not match the target pattern.");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to extract regex patterns from a text file
+    private static Map<String, String> extractRegexFromTextFile(String filePath) throws IOException {
+        Map<String, String> inputPatternMap = new HashMap<>();
+
+        // Read the text from the file
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                // Use regex to extract input and pattern from each line
+                Pattern pattern = Pattern.compile("\"([^\"]+)\"\\s*([^\"\\n]+)");
+                Matcher matcher = pattern.matcher(line);
+                if (matcher.find()) {
+                    String input = matcher.group(1);
+                    String patternString = matcher.group(2).trim();
+                    inputPatternMap.put(input, patternString);
+                }
+            }
+        }
+
+        return inputPatternMap;
+    }
+}

@@ -1,0 +1,35 @@
+package SINGLE_FILE;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1 {
+    public static void main(String[] args) {
+        String text = "Feature: Google Homepage\n" +
+                "Scenario 1: when user enter url in the browser homepage should be displayed\n" +
+                "Given I open the browser enter the url \"^https:\\/\\/www\\.google\\.com.*\"\n" +
+                "When I click on Search button\n" +
+                "Then I expect to see Homepage\n" +
+                "\n" +
+                "Scenario 2: when user enter email in the google page\n" +
+                "Given I open the gmail site \n" +
+                "and I enter the email \"[A-Za-z0-9\\._%+\\-]+@[A-Za-z0-9\\.\\-]+\\.[A-Za-z]{2,}\"\n" +
+                "When I click on Continue button\n" +
+                "Then I see the Password page\n" +
+                "\n" +
+                "Scenario 3: when user enter the phone number in signup page\n" +
+                "Given I open the Facebbok signup page \n" +
+                "and I enter the phone number \"^\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d$\"\n" +
+                "When I click on submit button\n" +
+                "Then I expect to see Homepage";
+
+        // Define the regex pattern to extract
+        Pattern pattern = Pattern.compile("\"(.*?)\"");
+        Matcher matcher = pattern.matcher(text);
+
+        // Extract and print the regex patterns
+        while (matcher.find()) {
+            System.out.println(matcher.group(1));
+        }
+    }
+}

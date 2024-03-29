@@ -1,0 +1,68 @@
+package SINGLE_FILE;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1 {
+
+    // Function to compare content of a file against multiple regex patterns from different files
+    public static void compareRegexInFiles(String sourceFilePath, String regexEmailFilePath, String regexUrlFilePath, String regexPhoneFilePath) {
+        try {
+            // Read content from the source file
+            String content = new String(Files.readAllBytes(Paths.get(sourceFilePath))).trim();
+
+            // Perform matching for email pattern
+            boolean emailMatch = compareRegexPattern(content, regexEmailFilePath);
+
+            // Perform matching for URL pattern
+            boolean urlMatch = compareRegexPattern(content, regexUrlFilePath);
+
+            // Perform matching for phone number pattern
+            boolean phoneMatch = compareRegexPattern(content, regexPhoneFilePath);
+
+            // Output matching results
+            System.out.println("Email: " + (emailMatch ? "Matches" : "Does not match"));
+            System.out.println("URL: " + (urlMatch ? "Matches" : "Does not match"));
+            System.out.println("Phone number: " + (phoneMatch ? "Matches" : "Does not match"));
+
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading files: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Function to compare content against a single regex pattern
+    private static boolean compareRegexPattern(String content, String regexFilePath) {
+        try {
+            // Read regex pattern from the target file
+            String regexPattern = new String(Files.readAllBytes(Paths.get(regexFilePath))).trim();
+
+            // Compile the regex pattern
+            Pattern pattern = Pattern.compile(regexPattern);
+
+            // Create matcher for the content
+            Matcher matcher = pattern.matcher(content);
+
+            // Perform matching
+            return matcher.find();
+
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading files: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
+        // Example usage
+        String sourceFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        String regexEmailFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/EMAIL_REGEX/Email_tgt.txt";
+        String regexUrlFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/URL_REGEX/Url_tgt.txt";
+        String regexPhoneFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/REGEX/Phone_num_tgt.txt";
+        
+        compareRegexInFiles(sourceFilePath, regexEmailFilePath, regexUrlFilePath, regexPhoneFilePath);
+    }
+}

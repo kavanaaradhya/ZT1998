@@ -1,0 +1,90 @@
+package SINGLE_FILE;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1 {
+
+    // Function to compare content of a file with a regex pattern
+    public static void compareRegexInFiles(String sourceRegexFilePath, String targetFilePath, String dataType) {
+        try {
+            // Read regex pattern from the source file
+            String sourceContent = new String(Files.readAllBytes(Paths.get(sourceRegexFilePath))).trim();
+            String regexPattern = extractRegex(sourceContent, dataType);
+            if (regexPattern == null) {
+                System.err.println("Invalid data type: " + dataType);
+                return;
+            }
+            System.out.println(dataType + " regex pattern from source file: " + regexPattern);
+
+            // Read content from the target file
+            String targetContent = new String(Files.readAllBytes(Paths.get(targetFilePath))).trim();
+            System.out.println("Content from target file: " + targetContent);
+
+            // Compile the regex pattern
+            Pattern pattern = Pattern.compile(regexPattern);
+
+            // Create matcher for the target content
+            Matcher matcher = pattern.matcher(targetContent);
+
+            // Perform matching
+            boolean match = matcher.matches();
+
+            // Output comparison result
+            if (match) {
+                System.out.println("The content in the target file matches the " + dataType + " regex pattern.");
+            } else {
+                System.out.println("The content in the target file does not match the " + dataType + " regex pattern.");
+            }
+
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading files: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Function to extract regex pattern based on data type
+    private static String extractRegex(String sourceContent, String dataType) {
+        String pattern = null;
+        switch (dataType.toLowerCase()) {
+            case "email":
+                pattern = extractPattern(sourceContent, "email");
+                break;
+            case "url":
+                pattern = extractPattern(sourceContent, "url");
+                break;
+            case "phone number":
+                pattern = extractPattern(sourceContent, "phone");
+                break;
+        }
+        return pattern;
+    }
+
+    // Function to extract regex pattern based on a keyword
+    private static String extractPattern(String sourceContent, String keyword) {
+        String regex = null;
+        String[] lines = sourceContent.split("\\r?\\n");
+        for (String line : lines) {
+            if (line.toLowerCase().startsWith(keyword.toLowerCase())) {
+                regex = line.substring(line.indexOf(":") + 1).trim();
+                break;
+            }
+        }
+        return regex;
+    }
+
+    public static void main(String[] args) {
+        // Example usage for email comparison
+        String sourceFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        compareRegexInFiles(sourceFilePath, "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/EMAIL_REGEX/Email_tgt.txt", "Email");
+
+        // Example usage for URL comparison
+        compareRegexInFiles(sourceFilePath, "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/URL_REGEX/Url_tgt.txt", "URL");
+
+        // Example usage for phone number comparison
+        compareRegexInFiles(sourceFilePath, "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/REGEX/Phone_num_tgt.txt", "Phone number");
+    }
+}

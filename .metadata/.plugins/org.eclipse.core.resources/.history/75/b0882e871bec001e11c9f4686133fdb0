@@ -1,0 +1,20 @@
+package SINGLE_FILE;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Pattern;
+
+public class Data {
+    public static void main(String[] args) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/DATA.txt"))) {
+            String patternString = reader.readLine(); // Read the regex pattern from the text file
+            Pattern compiledPattern = Pattern.compile(patternString); // Compile the regex pattern
+
+            // Print the datatype of the compiled regex pattern
+            System.out.println(compiledPattern.getClass());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

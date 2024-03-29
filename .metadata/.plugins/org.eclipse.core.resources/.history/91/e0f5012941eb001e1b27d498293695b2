@@ -1,0 +1,99 @@
+package SINGLE_FILE;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1 {
+
+    // Function to extract URLs from text
+    public static List<String> extractURLs(String text) {
+        List<String> urls = new ArrayList<>();
+        Pattern pattern = Pattern.compile("https?://\\S+");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            urls.add(matcher.group());
+        }
+        return urls;
+    }
+
+    // Function to extract emails from text
+    public static List<String> extractEmails(String text) {
+        List<String> emails = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            emails.add(matcher.group());
+        }
+        return emails;
+    }
+
+    // Function to extract phone numbers from text
+    public static List<String> extractPhoneNumbers(String text) {
+        List<String> phoneNumbers = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\b\\d{10}\\b");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            phoneNumbers.add(matcher.group());
+        }
+        return phoneNumbers;
+    }
+
+    // Function to compare content of a file against a regex pattern
+    public static void compareRegexInFile(String filePath, String regexFilePath, String dataType) {
+        try {
+            // Read content from the source file
+            String content = new String(Files.readAllBytes(Paths.get(filePath))).trim();
+
+            // Read regex pattern from the target file
+            String regexPattern = new String(Files.readAllBytes(Paths.get(regexFilePath))).trim();
+
+            // Extract URLs, emails, and phone numbers from the content
+            List<String> urls = extractURLs(content);
+            List<String> emails = extractEmails(content);
+            List<String> phoneNumbers = extractPhoneNumbers(content);
+
+            // Compile the regex pattern
+            Pattern pattern = Pattern.compile(regexPattern);
+
+            // Perform matching for URLs
+            System.out.println("URLs:");
+            for (String url : urls) {
+                Matcher matcher = pattern.matcher(url);
+                boolean match = matcher.matches();
+                System.out.println(url + " - " + (match ? "Matches" : "Does not match"));
+            }
+
+            // Perform matching for emails
+            System.out.println("Emails:");
+            for (String email : emails) {
+                Matcher matcher = pattern.matcher(email);
+                boolean match = matcher.matches();
+                System.out.println(email + " - " + (match ? "Matches" : "Does not match"));
+            }
+
+            // Perform matching for phone numbers
+            System.out.println("Phone Numbers:");
+            for (String phoneNumber : phoneNumbers) {
+                Matcher matcher = pattern.matcher(phoneNumber);
+                boolean match = matcher.matches();
+                System.out.println(phoneNumber + " - " + (match ? "Matches" : "Does not match"));
+            }
+
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading files: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        // Example usage for email, URL, and phone number comparison
+        String sourceFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        String regexFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt";
+        compareRegexInFile(sourceFilePath, regexFilePath, "Regex Pattern");
+    }
+}

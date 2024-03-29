@@ -1,0 +1,27 @@
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class emil_regex {
+    public static void main(String[] args) {
+        // Sample line of text containing a regex pattern surrounded by slashes
+        String lineOfText = "This is a sample line with an email address: example@example.com.";
+
+        // Define a regex pattern to match email addresses
+        String regexPattern = "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b";
+
+        // Create a Pattern object
+        Pattern pattern = Pattern.compile(regexPattern);
+
+        // Create a Matcher object
+        Matcher matcher = pattern.matcher(lineOfText);
+
+        // Find the regex pattern in the line of text
+        if (matcher.find()) {
+            // Extract the regex pattern
+            String extractedEmail = matcher.group();
+            System.out.println("Extracted email address: " + extractedEmail);
+        } else {
+            System.out.println("No email address found in the line of text.");
+        }
+    }
+}

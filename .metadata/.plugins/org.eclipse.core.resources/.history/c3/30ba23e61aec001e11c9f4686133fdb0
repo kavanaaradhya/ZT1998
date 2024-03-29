@@ -1,0 +1,10 @@
+// Main.java
+public class Data {
+    public static void main(String[] args) {
+        // Import the compiled regex pattern from RegexPattern.java
+        Pattern compiledPattern = RegexPattern.pattern;
+
+        // Print the datatype of the compiled regex pattern
+        System.out.println(compiledPattern.getClass());
+    }
+}

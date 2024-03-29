@@ -1,0 +1,53 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class main4 {
+    public static void main(String[] args) {
+        // File path where the regex pattern is stored
+        String patternFilePath = "/Users/kavana/eclipse-workspace/EMAIL_VALIDATION/src/test/java/Target.txt";
+
+        // Read the regex pattern from the file
+        String regexPattern = readPatternFromFile(patternFilePath);
+
+        // File path where the text is stored
+        String textFilePath = "/Users/kavana/eclipse-workspace/EMAIL_VALIDATION/src/test/java/Source.txt";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(textFilePath))) {
+            // Read the line of text from the file
+            String lineOfText = br.readLine();
+
+            // Create a Pattern object using the regex pattern
+            Pattern pattern = Pattern.compile(regexPattern);
+
+            // Create a Matcher object
+            Matcher matcher = pattern.matcher(lineOfText);
+
+            // Find the regex pattern in the line of text
+            if (matcher.find()) {
+                // Extract the regex pattern
+                String extractedRegex = matcher.group(1);
+                System.out.println("Extracted regex pattern: " + extractedRegex);
+            } else {
+                System.out.println("No regex pattern found in the line of text.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String readPatternFromFile(String filePath) {
+        StringBuilder pattern = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                pattern.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pattern.toString();
+    }
+}

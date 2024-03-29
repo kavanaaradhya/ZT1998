@@ -1,0 +1,83 @@
+package SINGLE_FILE;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single4 {
+    public static void main(String[] args) {
+        String sourceFile = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        String targetFile = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt";
+
+        try {
+            String sourceRegex = readFromFile(sourceFile);
+            String targetRegex = readFromFile(targetFile);
+
+            if (sourceRegex != null && targetRegex != null) {
+                System.out.println("Regex Input from Source File: " + sourceRegex);
+                System.out.println("Regex Pattern from Target File: " + targetRegex);
+
+                if (compareRegex(sourceRegex, targetRegex)) {
+                    System.out.println("Regex patterns match.");
+
+                    String sourceContent = readFromFileExceptRegex(sourceFile);
+                    String targetContent = readFromFileExceptRegex(targetFile);
+
+                    if (sourceContent != null && targetContent != null) {
+                        System.out.println("Content from Source File: " + sourceContent);
+                        System.out.println("Content from Target File: " + targetContent);
+
+                        if (sourceContent.equals(targetContent)) {
+                            System.out.println("Contents match.");
+                        } else {
+                            System.out.println("Contents do not match.");
+                        }
+                    } else {
+                        System.out.println("Unable to read contents from files.");
+                    }
+                } else {
+                    System.out.println("Regex patterns do not match.");
+                }
+            } else {
+                System.out.println("Unable to read regex patterns from files.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String readFromFile(String fileName) throws IOException {
+        StringBuilder contentBuilder = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                contentBuilder.append(line).append("\n");
+            }
+        }
+        return contentBuilder.toString().trim();
+    }
+
+    private static String readFromFileExceptRegex(String fileName) throws IOException {
+        StringBuilder contentBuilder = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!line.startsWith("Regex:")) {
+                    contentBuilder.append(line).append("\n");
+                }
+            }
+        }
+        return contentBuilder.toString().trim();
+    }
+
+    private static boolean compareRegex(String sourceRegex, String targetRegex) {
+        Pattern sourcePattern = Pattern.compile(sourceRegex);
+        Pattern targetPattern = Pattern.compile(targetRegex);
+        Matcher sourceMatcher = sourcePattern.matcher("");
+        Matcher targetMatcher = targetPattern.matcher("");
+
+        return sourceMatcher.pattern().pattern().equals(targetMatcher.pattern().pattern());
+    }
+}

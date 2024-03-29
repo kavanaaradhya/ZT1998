@@ -1,0 +1,27 @@
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+    public static void main(String[] args) {
+        // Sample line of text containing a regex pattern surrounded by slashes
+        String lineOfText = "This is a sample line with a regex pattern: /123-456-7890/.";
+
+        // Define a regex pattern to match a 10-digit phone number
+        String regexPattern = "\\b\\d{3}-\\d{3}-\\d{4}\\b";
+
+        // Create a Pattern object
+        Pattern pattern = Pattern.compile(regexPattern);
+
+        // Create a Matcher object
+        Matcher matcher = pattern.matcher(lineOfText);
+
+        // Find the regex pattern in the line of text
+        if (matcher.find()) {
+            // Extract the regex pattern
+            String extractedRegex = matcher.group();
+            System.out.println("Extracted phone number: " + extractedRegex);
+        } else {
+            System.out.println("No 10-digit phone number found in the line of text.");
+        }
+    }
+}

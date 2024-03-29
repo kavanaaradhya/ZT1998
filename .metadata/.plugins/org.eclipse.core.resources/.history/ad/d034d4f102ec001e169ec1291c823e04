@@ -1,0 +1,45 @@
+package SINGLE_FILE;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class Single3 {
+    public static void main(String[] args) {
+        String srcFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt"; // Source file path
+        String tgtFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt"; // Target file path
+
+        try {
+            // Read the text from the source file
+            StringBuilder srcStringBuilder = new StringBuilder();
+            BufferedReader srcBufferedReader = new BufferedReader(new FileReader(srcFilePath));
+            String srcLine;
+            while ((srcLine = srcBufferedReader.readLine()) != null) {
+                srcStringBuilder.append(srcLine).append("\n");
+            }
+            srcBufferedReader.close();
+
+            String srcText = srcStringBuilder.toString();
+
+            // Read the text from the target file
+            StringBuilder tgtStringBuilder = new StringBuilder();
+            BufferedReader tgtBufferedReader = new BufferedReader(new FileReader(tgtFilePath));
+            String tgtLine;
+            while ((tgtLine = tgtBufferedReader.readLine()) != null) {
+                tgtStringBuilder.append(tgtLine).append("\n");
+            }
+            tgtBufferedReader.close();
+
+            String tgtText = tgtStringBuilder.toString();
+
+            // Compare the text from both files
+            if (srcText.equals(tgtText)) {
+                System.out.println("Files are identical.");
+            } else {
+                System.out.println("Files are not identical.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

@@ -1,0 +1,88 @@
+package SINGLE_FILE;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single3 {
+    public static void main(String[] args) {
+        // File paths for source and target files
+        String srcFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt"; // Update the source file path accordingly
+        String tgtFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt"; // Update the target file path accordingly
+
+        try {
+            // Extract regex patterns from the source file
+            extractRegexFromTextFile(srcFilePath);
+
+            // Modify the target file with extracted regex patterns
+            modifyTargetFileWithRegex(tgtFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to extract regex patterns from a text file
+    private static void extractRegexFromTextFile(String filePath) throws IOException {
+        // Read the text from the file
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuilder.append(line).append("\n");
+        }
+        bufferedReader.close();
+
+        String text = stringBuilder.toString();
+
+        // Define the regex pattern to extract URL, email, and phone number regex inputs
+        Pattern urlPattern = Pattern.compile("url \"(.*?)\"");
+        Matcher urlMatcher = urlPattern.matcher(text);
+
+        Pattern emailPattern = Pattern.compile("email \"(.*?)\"");
+        Matcher emailMatcher = emailPattern.matcher(text);
+
+        Pattern phonePattern = Pattern.compile("phone number \"(.*?)\"");
+        Matcher phoneMatcher = phonePattern.matcher(text);
+
+        // Extract and print the regex patterns
+        System.out.println("URL Regex Input:");
+        while (urlMatcher.find()) {
+            System.out.println(urlMatcher.group(1));
+        }
+
+        System.out.println("\nEmail Regex Input:");
+        while (emailMatcher.find()) {
+            System.out.println(emailMatcher.group(1));
+        }
+
+        System.out.println("\nPhone Number Regex Input:");
+        while (phoneMatcher.find()) {
+            System.out.println(phoneMatcher.group(1));
+        }
+    }
+
+    // Method to modify the target file with extracted regex patterns
+    private static void modifyTargetFileWithRegex(String filePath) throws IOException {
+        // Read the text from the file
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuilder.append(line).append("\n");
+        }
+        bufferedReader.close();
+
+        String text = stringBuilder.toString();
+
+        // Define the regex pattern to extract
+        Pattern pattern = Pattern.compile("\"(.*?)\"");
+        Matcher matcher = pattern.matcher(text);
+
+        // Extract and print the regex patterns
+        while (matcher.find()) {
+            System.out.println(matcher.group(1));
+        }
+    }
+}

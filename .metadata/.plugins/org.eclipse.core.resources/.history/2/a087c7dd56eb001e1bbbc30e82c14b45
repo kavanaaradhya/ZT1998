@@ -1,0 +1,76 @@
+package SINGLE_FILE;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1 {
+
+    // Function to compare content of two files using a regular expression
+    public static void compareRegexInFiles(String sourceFilePath, String targetFilePath, String dataType) {
+        try {
+            // Read content from the source file
+            String sourceContent = new String(Files.readAllBytes(Paths.get(sourceFilePath))).trim();
+            String[] sourceParts = sourceContent.split("###");
+
+            // Extract regex pattern and input
+            String regexPattern = sourceParts[0].trim();
+            String input = sourceParts[1].trim();
+            
+            System.out.println("Source " + dataType + ": " + input);
+            System.out.println("Target regex pattern: " + regexPattern);
+
+            // Compile the regex pattern
+            Pattern pattern = Pattern.compile(regexPattern);
+
+            // Create matcher for the input
+            Matcher matcher = pattern.matcher(input);
+
+            // Perform matching
+            boolean match = matcher.matches();
+
+            // Output comparison result
+            if (match) {
+                System.out.println("The " + dataType + " matches the regex pattern.");
+            } else {
+                System.out.println("The " + dataType + " does not match the regex pattern.");
+            }
+
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading files: " + e.getMessage());
+            e.printStackTrace();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Invalid format in source file. Please make sure to separate regex pattern and input using '###'.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        // Example usage for email comparison
+    	 
+    	        Scanner scanner = new Scanner(System.in);
+
+    	        // Get source file path from the user
+    	        System.out.print("Enter the path of the source file: ");
+    	        String sourceFilePath = scanner.nextLine();
+
+    	        // Get target file path from the user
+    	        System.out.print("Enter the path of the target file: ");
+    	        String targetFilePath = scanner.nextLine();
+
+    	        // Example usage for email comparison
+    	        compareRegexInFiles(sourceFilePath, targetFilePath, "Email");
+
+    	        // Example usage for URL comparison
+    	        compareRegexInFiles(sourceFilePath, targetFilePath, "URL");
+
+    	        // Example usage for phone number comparison
+    	        compareRegexInFiles(sourceFilePath, targetFilePath, "Phone number");
+
+    	        scanner.close();
+    	    }
+    }
+

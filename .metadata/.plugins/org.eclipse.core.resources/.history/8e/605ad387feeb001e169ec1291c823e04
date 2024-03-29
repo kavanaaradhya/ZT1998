@@ -1,0 +1,49 @@
+package SINGLE_FILE;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single3 {
+    public static void main(String[] args) {
+        String srcFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        String tgtFilePath = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt";
+
+        // Process source file
+        System.out.println("Source File:");
+        processFile(srcFilePath);
+
+        // Process target file
+        System.out.println("\nTarget File:");
+        processFile(tgtFilePath);
+    }
+
+    private static void processFile(String filePath) {
+        try {
+            // Read the text from the file
+            StringBuilder stringBuilder = new StringBuilder();
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line).append("\n");
+            }
+            bufferedReader.close();
+
+            String text = stringBuilder.toString();
+
+            // Define the regex pattern to extract
+            Pattern pattern = Pattern.compile("\"(.*?)\"");
+            Matcher matcher = pattern.matcher(text);
+
+            // Extract and print the regex inputs and patterns
+            while (matcher.find()) {
+                System.out.println("Input: " + matcher.group(1));
+                System.out.println("Pattern: " + pattern.pattern());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

@@ -1,0 +1,48 @@
+package SINGLE_FILE;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1 {
+
+    public static void main(String[] args) {
+        try {
+            // Load regex from properties file
+            Properties properties = new Properties();
+            properties.load(Files.newBufferedReader(Paths.get("/path/to/regex.properties")));
+
+            String urlRegex = properties.getProperty("urlRegex");
+            String emailRegex = properties.getProperty("emailRegex");
+            String phoneNumberRegex = properties.getProperty("phoneNumberRegex");
+
+            // Read text from the source file
+            String text = new String(Files.readAllBytes(Paths.get("/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt")));
+            List<String> urls = extractMatches(text, urlRegex);
+            List<String> emails = extractMatches(text, emailRegex);
+            List<String> phoneNumbers = extractMatches(text, phoneNumberRegex);
+
+            System.out.println("URLs: " + urls);
+            System.out.println("Emails: " + emails);
+            System.out.println("Phone Numbers: " + phoneNumbers);
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading the source file or properties file: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static List<String> extractMatches(String text, String regex) {
+        List<String> matches = new ArrayList<>();
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            matches.add(matcher.group());
+        }
+        return matches;
+    }
+}

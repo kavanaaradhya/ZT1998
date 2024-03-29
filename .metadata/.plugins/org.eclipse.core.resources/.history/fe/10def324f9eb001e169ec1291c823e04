@@ -1,0 +1,59 @@
+package SINGLE_FILE;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Single1 {
+    public static void main(String[] args) {
+        String sourceFileName = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_SRC.txt";
+        String targetFileName = "/Users/kavana/eclipse-workspace/REGEX_VALIDTION/src/test/java/SINGLE_FILE/Single_TGT.txt";
+
+        try {
+            // Read the regular expression input from the source file
+            BufferedReader sourceReader = new BufferedReader(new FileReader(sourceFileName));
+            String regexInput = sourceReader.readLine(); // Assuming the first line contains the regex input
+            sourceReader.close();
+
+            // Read the regular expressions from the target file
+            BufferedReader targetReader = new BufferedReader(new FileReader(targetFileName));
+            String emailPattern = targetReader.readLine();
+            String urlPattern = targetReader.readLine();
+            String phonePattern = targetReader.readLine();
+            targetReader.close();
+
+            // Compile patterns
+            Pattern emailRegex = Pattern.compile(emailPattern);
+            Pattern urlRegex = Pattern.compile(urlPattern);
+            Pattern phoneRegex = Pattern.compile(phonePattern);
+
+            // Print regex input
+            System.out.println("Regex Input: " + regexInput);
+
+            // Extract regex input from source file and extract email addresses, URLs, and phone numbers
+            extractAndPrintMatches(regexInput, emailRegex, urlRegex, phoneRegex);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void extractAndPrintMatches(String text, Pattern emailPattern, Pattern urlPattern, Pattern phonePattern) {
+        Matcher emailMatcher = emailPattern.matcher(text);
+        while (emailMatcher.find()) {
+            System.out.println("Email: " + emailMatcher.group());
+        }
+
+        Matcher urlMatcher = urlPattern.matcher(text);
+        while (urlMatcher.find()) {
+            System.out.println("URL: " + urlMatcher.group());
+        }
+
+        Matcher phoneMatcher = phonePattern.matcher(text);
+        while (phoneMatcher.find()) {
+            System.out.println("Phone: " + phoneMatcher.group());
+        }
+    }
+}

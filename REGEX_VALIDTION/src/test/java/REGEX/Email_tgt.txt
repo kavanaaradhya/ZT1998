@@ -1,0 +1,5 @@
+Scenario 1: when user enter email in the google page
+Given I open the gmail site 
+and I enter the email "[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}"
+When I click on Continue button
+Then I see the Password page
