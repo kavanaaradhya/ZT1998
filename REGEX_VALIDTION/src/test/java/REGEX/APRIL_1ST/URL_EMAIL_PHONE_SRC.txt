@@ -1,0 +1,5 @@
+Scenario 3: when user enter the phone number in signup page
+Given I open the Facebbok signup page 
+and I enter the phone number "9876543205"
+When I click on submit button
+Then I expect to see Homepage
