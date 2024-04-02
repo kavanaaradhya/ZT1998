@@ -1,0 +1,1 @@
+Given I open the browser enter the url "((((https?)://)|)([-%()_.!~*';\?:@&=+$,A-Za-z0-9])+)(?:com|in|org)"
