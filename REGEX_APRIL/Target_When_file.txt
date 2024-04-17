@@ -1,1 +1,3 @@
 When I click on Search button
+And I search for the Laptop
+When I click on close button
