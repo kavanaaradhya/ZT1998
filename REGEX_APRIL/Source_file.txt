@@ -1,3 +1,7 @@
 Given I open the browser enter the url "https://www.google.com"
 When I click on Search button
-Then I expect to see Homepage
+Then  expect to see Homepage
+And I search for the Laptop
+Then I got Laptop details
+When I click on close button
+Then browser will be closed
