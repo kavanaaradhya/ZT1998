@@ -1,4 +1,4 @@
-package Regex_Part2;
+package REGEX_APRIL;
 
 import java.io.*;
 import java.util.HashSet;
@@ -83,7 +83,7 @@ public class April_colour {
                             }
                         }
                         if (!matched) {
-                            buffer.write("<tr class=\"not-matched\"><td>" + line + "</td><td></td><td>Not Matched</td></tr>\n");
+                            buffer.write("<tr class=\"not-matched\"><td>" + line + "</td><td>The given source step is not matched with any of predefined steps</td><td>Not Matched</td></tr>\n");
                             for (int i = 0; i < targetFilePaths.length; i++) {
                                 if (!matchedTargets[i]) {
                                     // Do something if not matched
